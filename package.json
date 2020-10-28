@@ -29,6 +29,8 @@
     "babel-jest": "^26.0.1",
     "babel-polyfill": "^6.26.0",
     "cypress": "^4.5.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.0.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.11.0",
@@ -41,6 +43,7 @@
     "jest": "^26.0.1",
     "jest-css-modules-transform": "^4.0.0",
     "lint-staged": ">=8",
+    "node-sass": "^4.14.1",
     "parcel-bundler": "^1.12.3",
     "prettier": "^2.0.5",
     "start-server-and-test": "^1.10.0"
