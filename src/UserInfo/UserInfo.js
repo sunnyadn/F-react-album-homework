@@ -16,8 +16,12 @@ class UserInfo extends Component {
   renderTable() {
     const { email, phone, website, company } = this.props.info;
     return (
-      <table>
-        <thead>Contact Me @</thead>
+      <table className="InfoTable">
+        <thead>
+          <tr>
+            <th colSpan="2">Contact Me @</th>
+          </tr>
+        </thead>
         <tbody>
           {[
             renderTableRow('Email', email, `mailto:${email}`),

@@ -1,4 +1,33 @@
 .UserInfo {
   padding-top: 60px;
   width: 400px;
+
+  .InfoTable {
+    line-height: 30px;
+    width: 100%;
+    margin-top: 40px;
+
+    tr {
+      text-align: left;
+    }
+
+    thead {
+      color: #929292;
+      font-size: 18px;
+
+      th {
+        font-weight: normal;
+      }
+    }
+
+    tbody {
+      td {
+        text-align: right;
+      }
+    }
+
+    a:not([href]) {
+      color: inherit;
+    }
+  }
 }
