@@ -28,7 +28,7 @@ class App extends Component {
         <Header user={user} />
         <main className="content">
           <Albums />
-          <UserInfo />
+          <UserInfo info={user} />
         </main>
       </div>
     );

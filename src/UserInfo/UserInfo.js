@@ -3,7 +3,7 @@ import './UserInfo.scss';
 
 function renderTableRow(head, data, link) {
   return (
-    <tr>
+    <tr key={head.toLowerCase()}>
       <th>{head}</th>
       <td>
         <a href={link}>{data}</a>
@@ -17,12 +17,15 @@ class UserInfo extends Component {
     const { email, phone, website, company } = this.props.info;
     return (
       <table>
-        {[
-          renderTableRow('Email', email, `mailto:${  email}`),
-          renderTableRow('Phone', phone, `tel:${  phone}`),
-          renderTableRow('Website', website, `http://${  website}`),
-          renderTableRow('Company', company.name),
-        ]}
+        <thead>Contact Me @</thead>
+        <tbody>
+          {[
+            renderTableRow('Email', email, `mailto:${email}`),
+            renderTableRow('Phone', phone, `tel:${phone}`),
+            renderTableRow('Website', website, `http://${website}`),
+            renderTableRow('Company', company?.name),
+          ]}
+        </tbody>
       </table>
     );
   }
@@ -32,7 +35,6 @@ class UserInfo extends Component {
     return (
       <aside className="UserInfo">
         <h1>{name}</h1>
-        <h2>Contact Me @</h2>
         {this.renderTable()}
       </aside>
     );
