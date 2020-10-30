@@ -20,7 +20,7 @@ class Albums extends Component {
     return (
       <section className="Albums">
         {albums.map((album) => (
-          <div className="album">
+          <div className="album" key={album.id}>
             <h1 className="title">{album.title}</h1>
           </div>
         ))}

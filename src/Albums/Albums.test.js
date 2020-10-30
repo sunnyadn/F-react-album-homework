@@ -11,9 +11,11 @@ describe('<Albums />', () => {
   it('should display album titles', async () => {
     const data = [
       {
+        id: '1',
         title: 'quidem molestiae enim',
       },
       {
+        id: '2',
         title: 'sunt qui excepturi placeat culpa',
       },
     ];
