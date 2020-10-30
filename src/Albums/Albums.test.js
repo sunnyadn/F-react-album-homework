@@ -5,8 +5,10 @@ import Albums from './Albums';
 
 jest.mock('../apiUtil');
 
+const flushPromises = () => new Promise(setImmediate);
+
 describe('<Albums />', () => {
-  it('should display album titles', () => {
+  it('should display album titles', async () => {
     const data = [
       {
         title: 'quidem molestiae enim',
@@ -18,8 +20,11 @@ describe('<Albums />', () => {
 
     fetchAlbums.mockResolvedValue(data);
 
-    const albums = shallow(<Albums />);
-    const text = albums.text();
+    const wrapper = shallow(<Albums />);
+    await flushPromises();
+    wrapper.update();
+
+    const text = wrapper.text();
 
     expect(text).toContain(data[0].title);
     expect(text).toContain(data[1].title);

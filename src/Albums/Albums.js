@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { fetchAlbums } from '../apiUtil';
 import './Albums.scss';
 
 class Albums extends Component {
@@ -9,13 +10,18 @@ class Albums extends Component {
     };
   }
 
+  async componentDidMount() {
+    const albums = await fetchAlbums();
+    this.setState({ albums });
+  }
+
   render() {
     const { albums } = this.state;
     return (
       <section className="Albums">
-        {albums.map(() => (
+        {albums.map((album) => (
           <div className="album">
-            <p className="title">Album title here...</p>
+            <h1 className="title">{album.title}</h1>
           </div>
         ))}
       </section>
