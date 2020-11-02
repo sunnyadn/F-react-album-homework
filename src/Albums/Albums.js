@@ -29,7 +29,7 @@ class Albums extends Component {
     return (
       <div className="photos">
         {photos.map((p) => (
-          <figure className="figure">
+          <figure className="figure" key={p.id}>
             <img className="photo" src={p.thumbnailUrl} alt={`Photo ${p.id}`} />
             <figcaption>{p.title}</figcaption>
           </figure>
