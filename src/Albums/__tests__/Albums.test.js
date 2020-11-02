@@ -91,8 +91,6 @@ describe('<Albums />', () => {
   it('should expand the clicked album and collapse the previous one', async () => {
     const wrapper = render(<Albums />);
 
-    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
-
     fetchPhotos.mockResolvedValueOnce([
       {
         albumId: 2,
@@ -117,10 +115,10 @@ describe('<Albums />', () => {
       },
     ]);
 
+    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
+
     const secondAlbum = wrapper.getAllByTestId('album')[1];
     fireEvent.click(secondAlbum);
-
-    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
 
     expect(getAllByAltText(secondAlbum, /Photo \d/)).toHaveLength(3);
 

@@ -15,19 +15,26 @@ class Albums extends Component {
   async componentDidMount() {
     const albums = await fetchAlbums();
     const currentAlbumId = albums[0].id;
-    await this.fetchPhotosOfAlbum(currentAlbumId);
+
+    albums.forEach(async (album) => {
+      const photos = await this.fetchPhotosOfAlbum(album.id);
+      photos.forEach((photo) => {
+        const image = new Image();
+        image.src = photo.thumbnailUrl;
+      });
+    });
 
     this.setState({ albums, currentAlbumId });
   }
 
   albumClicked = (albumId) => {
-    this.fetchPhotosOfAlbum(albumId);
     this.setState({ currentAlbumId: albumId });
   };
 
   async fetchPhotosOfAlbum(albumId) {
-    const photos = await fetchPhotos(albumId);
+    const photos = (await fetchPhotos(albumId)).slice(0, 3);
     this.setState((prevState) => ({ photos: [...prevState.photos, ...photos] }));
+    return photos;
   }
 
   renderPhotosOfAlbum(albumId) {
