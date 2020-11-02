@@ -1,4 +1,11 @@
-import { render, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  getAllByAltText,
+  getByText,
+  queryByAltText,
+  render,
+  waitFor,
+} from '@testing-library/react';
 import React from 'react';
 import { fetchAlbums, fetchPhotos } from '../../apiUtil';
 import Albums from '../Albums';
@@ -59,23 +66,65 @@ describe('<Albums />', () => {
   fetchPhotos.mockResolvedValue(photos);
 
   it('should display album titles', async () => {
-    const { getByText } = render(<Albums />);
+    const { getByText: text } = render(<Albums />);
 
     await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
 
-    expect(getByText(albums[0].title)).toBeInTheDocument();
-    expect(getByText(albums[1].title)).toBeInTheDocument();
+    expect(text(albums[0].title)).toBeInTheDocument();
+    expect(text(albums[1].title)).toBeInTheDocument();
   });
 
   it('should show the first three photos of the first album', async () => {
-    const { getByText, getAllByAltText } = render(<Albums />);
+    const wrapper = render(<Albums />);
 
     await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
 
-    expect(getByText(photos[0].title)).toBeInTheDocument();
-    expect(getByText(photos[1].title)).toBeInTheDocument();
-    expect(getByText(photos[2].title)).toBeInTheDocument();
+    const firstAlbum = wrapper.getAllByTestId('album')[0];
 
-    expect(getAllByAltText(/Photo \d/)).toHaveLength(3);
+    expect(getByText(firstAlbum, photos[0].title)).toBeInTheDocument();
+    expect(getByText(firstAlbum, photos[1].title)).toBeInTheDocument();
+    expect(getByText(firstAlbum, photos[2].title)).toBeInTheDocument();
+
+    expect(getAllByAltText(firstAlbum, /Photo \d/)).toHaveLength(3);
+  });
+
+  it('should expand the clicked album and collapse the previous one', async () => {
+    const wrapper = render(<Albums />);
+
+    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
+
+    fetchPhotos.mockResolvedValueOnce([
+      {
+        albumId: 2,
+        id: 51,
+        title: 'non sunt voluptatem placeat consequuntur rem incidunt',
+        url: 'https://via.placeholder.com/600/8e973b',
+        thumbnailUrl: 'https://via.placeholder.com/150/8e973b',
+      },
+      {
+        albumId: 2,
+        id: 52,
+        title: 'eveniet pariatur quia nobis reiciendis laboriosam ea',
+        url: 'https://via.placeholder.com/600/121fa4',
+        thumbnailUrl: 'https://via.placeholder.com/150/121fa4',
+      },
+      {
+        albumId: 2,
+        id: 53,
+        title: 'soluta et harum aliquid officiis ab omnis consequatur',
+        url: 'https://via.placeholder.com/600/6efc5f',
+        thumbnailUrl: 'https://via.placeholder.com/150/6efc5f',
+      },
+    ]);
+
+    const secondAlbum = wrapper.getAllByTestId('album')[1];
+    fireEvent.click(secondAlbum);
+
+    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
+
+    expect(getAllByAltText(secondAlbum, /Photo \d/)).toHaveLength(3);
+
+    const firstAlbum = wrapper.getAllByTestId('album')[0];
+    expect(queryByAltText(firstAlbum, /Photo \d/)).not.toBeInTheDocument();
   });
 });

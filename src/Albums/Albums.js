@@ -8,15 +8,22 @@ class Albums extends Component {
     this.state = {
       albums: [],
       photos: [],
+      currentAlbumId: 0,
     };
   }
 
   async componentDidMount() {
     const albums = await fetchAlbums();
-    await this.fetchPhotosOfAlbum(albums[0].id);
+    const currentAlbumId = albums[0].id;
+    await this.fetchPhotosOfAlbum(currentAlbumId);
 
-    this.setState({ albums });
+    this.setState({ albums, currentAlbumId });
   }
+
+  albumClicked = (albumId) => {
+    this.fetchPhotosOfAlbum(albumId);
+    this.setState({ currentAlbumId: albumId });
+  };
 
   async fetchPhotosOfAlbum(albumId) {
     const photos = await fetchPhotos(albumId);
@@ -43,9 +50,14 @@ class Albums extends Component {
     return (
       <section className="Albums">
         {albums.map((album) => (
-          <div className="album" key={album.id}>
+          <div
+            className="album"
+            key={album.id}
+            data-testid="album"
+            onClick={() => this.albumClicked(album.id)}
+          >
             <h1 className="title">{album.title}</h1>
-            {this.renderPhotosOfAlbum(album.id)}
+            {album.id === this.state.currentAlbumId && this.renderPhotosOfAlbum(album.id)}
           </div>
         ))}
       </section>
