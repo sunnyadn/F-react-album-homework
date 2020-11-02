@@ -1,11 +1,9 @@
-import { shallow } from 'enzyme';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { fetchAlbums, fetchPhotos } from '../apiUtil';
-import Albums from './Albums';
+import { fetchAlbums, fetchPhotos } from '../../apiUtil';
+import Albums from '../Albums';
 
-jest.mock('../apiUtil');
-
-const flushPromises = () => new Promise(setImmediate);
+jest.mock('../../apiUtil');
 
 describe('<Albums />', () => {
   const albums = [
@@ -60,28 +58,24 @@ describe('<Albums />', () => {
   fetchAlbums.mockResolvedValue(albums);
   fetchPhotos.mockResolvedValue(photos);
 
-  let wrapper;
+  it('should display album titles', async () => {
+    const { getByText } = render(<Albums />);
 
-  beforeAll(async () => {
-    wrapper = shallow(<Albums />);
-    await flushPromises();
-    wrapper.update();
-  });
+    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
 
-  it('should display album titles', () => {
-    const text = wrapper.text();
-    expect(text).toContain(albums[0].title);
-    expect(text).toContain(albums[1].title);
+    expect(getByText(albums[0].title)).toBeInTheDocument();
+    expect(getByText(albums[1].title)).toBeInTheDocument();
   });
 
   it('should show the first three photos of the first album', async () => {
-    const album = wrapper.find('.album:first-child');
-    expect(album.find('img')).toHaveLength(3);
+    const { getByText, getAllByAltText } = render(<Albums />);
 
-    const text = album.text();
+    await waitFor(() => expect(fetchPhotos).toHaveBeenCalled());
 
-    expect(text).toContain(photos[0].title);
-    expect(text).toContain(photos[1].title);
-    expect(text).toContain(photos[2].title);
+    expect(getByText(photos[0].title)).toBeInTheDocument();
+    expect(getByText(photos[1].title)).toBeInTheDocument();
+    expect(getByText(photos[2].title)).toBeInTheDocument();
+
+    expect(getAllByAltText(/Photo \d/)).toHaveLength(3);
   });
 });
