@@ -26,7 +26,12 @@ class Albums extends Component {
   renderPhotosOfAlbum(albumId) {
     const photos = this.state.photos.filter((photo) => photo.albumId === albumId).slice(0, 3);
 
-    return photos.map((p) => <img src={p.thumbnailUrl} alt={`Photo ${  p.id}`} />);
+    return photos.map((p) => (
+      <figure>
+        <img src={p.thumbnailUrl} alt={`Photo ${p.id}`} />
+        <figcaption>{p.title}</figcaption>
+      </figure>
+    ));
   }
 
   render() {

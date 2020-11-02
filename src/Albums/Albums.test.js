@@ -70,12 +70,18 @@ describe('<Albums />', () => {
 
   it('should display album titles', () => {
     const text = wrapper.text();
-
     expect(text).toContain(albums[0].title);
     expect(text).toContain(albums[1].title);
   });
 
   it('should show the first three photos of the first album', async () => {
-    expect(wrapper.find('.album:first-child img')).toHaveLength(3);
+    const album = wrapper.find('.album:first-child');
+    expect(album.find('img')).toHaveLength(3);
+
+    const text = album.text();
+
+    expect(text).toContain(photos[0].title);
+    expect(text).toContain(photos[1].title);
+    expect(text).toContain(photos[2].title);
   });
 });
