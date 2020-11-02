@@ -10,11 +10,11 @@ const flushPromises = () => new Promise(setImmediate);
 describe('<Albums />', () => {
   const albums = [
     {
-      id: '1',
+      id: 1,
       title: 'quidem molestiae enim',
     },
     {
-      id: '2',
+      id: 2,
       title: 'sunt qui excepturi placeat culpa',
     },
   ];
@@ -76,6 +76,6 @@ describe('<Albums />', () => {
   });
 
   it('should show the first three photos of the first album', async () => {
-    expect(wrapper.find('img')).toHaveLength(3);
+    expect(wrapper.find('.album:first-child img')).toHaveLength(3);
   });
 });
